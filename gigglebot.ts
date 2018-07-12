@@ -64,7 +64,8 @@ enum gigglebotI2CCommands {
     GET_MOTOR_STATUS_RIGHT,
     GET_MOTOR_STATUS_LEFT,
     SET_MOTOR_POWER,
-    SET_MOTOR_POWERS
+    SET_MOTOR_POWERS,
+    GET_VOLTAGE_RAIL
 }
 
 enum gigglebotLineType {
@@ -800,6 +801,19 @@ namespace gigglebot {
         return val.getNumber(NumberFormat.UInt16BE, 0);
     }
 
+    //% blockId="gigglebot_get_voltage_rail" block="rail voltage (mv)"
+    //% advanced=true
+    export function voltageRail(): number {
+        /**
+         * TODO: describe your function here
+         * @param value describe value here, eg: 5
+         */
+        let buf = pins.createBuffer(1)
+        buf.setNumber(NumberFormat.UInt8BE, 0, gigglebotI2CCommands.GET_VOLTAGE_RAIL)
+        pins.i2cWriteBuffer(ADDR, buf)
+        let val = pins.i2cReadBuffer(ADDR, 2)
+        return val.getNumber(NumberFormat.UInt16BE, 0);
+    }
 
     /**
     * Reads the two line sensors
